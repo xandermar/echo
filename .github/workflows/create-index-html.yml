@@ -1,0 +1,32 @@
+name: Create index.html for GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create docs directory if it doesn't exist
+        run: mkdir -p docs
+
+      - name: Create index.html file
+        run: |
+          echo "<!DOCTYPE html>" > docs/index.html
+          echo "<html>" >> docs/index.html
+          echo "<head><title>Welcome</title></head>" >> docs/index.html
+          echo "<body><h1>Hello from GitHub Actions!</h1></body>" >> docs/index.html
+          echo "</html>" >> docs/index.html
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add docs/index.html
+          git commit -m "Create index.html for GitHub Pages" || echo "No changes to commit"
+          git push
